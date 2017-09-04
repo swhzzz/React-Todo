@@ -1,0 +1,12 @@
+.todo {
+    padding: .5em;
+    display: flex;
+    align-items: center;
+}
+.todo > .content {
+    flex: 1;
+    padding: 0 .5em;
+}
+.line-through {
+    text-decoration: line-through;
+}

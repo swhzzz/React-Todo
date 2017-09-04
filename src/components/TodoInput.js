@@ -1,4 +1,5 @@
 import React from 'react'
+import '../TodoInput.css'
 
 class TodoInput extends React.Component{
     handleChange= (e)=>{
@@ -14,7 +15,7 @@ class TodoInput extends React.Component{
     render(){
         return (
             <div>
-                <input type="text" value={this.props.value} onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
+                <input type="text" className="todoInput" value={this.props.value} onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
             </div>
         )
     }

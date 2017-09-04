@@ -1,7 +1,19 @@
 .App {
-    width: 600px;
-    margin:0 auto;
-    box-shadow: 0 0 5px rgba(0,0,0,0.4);
-    height: 100vh;
+    width: 30em;
+    min-height: 38em;
+    padding: 0 1em;
+    color: #333;
+    border: 1px solid #aaa;
+    border-radius: 4px;
     background-color: #fff;
+    margin: 2em auto;
+    box-shadow: 0 0 5px rgba(0,0,0,0.4);
 }
+.App>.todolist> li:nth-child(odd){
+    background-color: #eee;
+}
+
+.App>.todolist> li:nth-child(even){
+    background-color: transparent;
+}
+
