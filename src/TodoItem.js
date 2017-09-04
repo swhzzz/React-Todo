@@ -1,5 +1,5 @@
 import React from 'react'
-import '../TodoItem.css'
+import './TodoItem.css'
 
 class TodoItem extends React.Component {
     returnDeleteId = () => {

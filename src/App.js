@@ -2,15 +2,34 @@ import React, {Component} from 'react';
 import './reset.css'
 import 'normalize.css'
 import './App.css'
-import TodoInput from './components/TodoInput'
-import TodoItem from './components/TodoItem'
+import TodoInput from './TodoInput'
+import TodoItem from './TodoItem'
+// import localStore from './localStore'
+import UserDialog from "./UserDialog";
+import AV from './leanCloud'
 
 let i = 0;
 
 class App extends Component {
     state = {
         inputValue: '',
-        todoList: []
+        // todoList: localStore.load('data') || []
+        todoList: [],
+        checked: 'signUp',
+        user: this.getCurrentUser() || {}
+    }
+
+    getCurrentUser() {
+        let user = AV.User.current()
+        // console.log(user)
+        if (user) {
+            return {
+                id: user.id,
+                ...user.attributes
+            }
+        } else {
+            return null
+        }
     }
 
     changeInputValue = (inputValue) => {
@@ -45,17 +64,34 @@ class App extends Component {
         })
     }
 
+    onSignUpOrLogIn = (user) => {
+        this.setState({user})
+    }
+
+    // onLogIn = (user)=>{
+    //     this.setState({user})
+    // }
+
+    logOut = ()=>{
+        this.setState({user: {}})
+        AV.User.logOut()
+    }
+    // componentDidUpdate(){
+    //     localStore.save('data',this.state.todoList)
+    // }
+
     render() {
-        let todos = this.state.todoList
-            .map((item, index) => {
-                return <TodoItem key={index} todo={item} handleToggle={this.handleToggle}
-                                 handleDelete={this.handleDelete}/>
-            })
+        let todos = this.state.todoList.map((item, index) => {
+            return <TodoItem key={index} todo={item} handleToggle={this.handleToggle}
+                             handleDelete={this.handleDelete}/>
+        })
         return (
             <div className="App">
-                <h1>我的待办</h1>
+                <h1>{this.state.user.username || '我'}的待办</h1>
+                {this.state.user.id?<button onClick={this.logOut}>登出</button>:null}
                 <TodoInput value={this.state.inputValue} changeValue={this.changeInputValue} addTodo={this.addTodo}/>
                 <ol className="todolist">{todos}</ol>
+                {this.state.user.id ? null : <UserDialog onSignUpOrLogIn={this.onSignUpOrLogIn} />}
             </div>
         )
     }

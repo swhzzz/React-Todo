@@ -1,5 +1,5 @@
 import React from 'react'
-import '../TodoInput.css'
+import './TodoInput.css'
 
 class TodoInput extends React.Component{
     handleChange= (e)=>{
