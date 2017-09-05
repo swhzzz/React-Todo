@@ -72,7 +72,7 @@ class App extends Component {
     //     this.setState({user})
     // }
 
-    logOut = ()=>{
+    logOut = () => {
         this.setState({user: {}})
         AV.User.logOut()
     }
@@ -85,13 +85,16 @@ class App extends Component {
             return <TodoItem key={index} todo={item} handleToggle={this.handleToggle}
                              handleDelete={this.handleDelete}/>
         })
+        let mainPart = <div className="App">
+            <h1>{this.state.user.username || '我'}的待办</h1>
+            {this.state.user.id ? <button onClick={this.logOut}>登出</button> : null}
+            <TodoInput value={this.state.inputValue} changeValue={this.changeInputValue} addTodo={this.addTodo}/>
+            <ol className="todolist">{todos}</ol>
+        </div>
         return (
-            <div className="App">
-                <h1>{this.state.user.username || '我'}的待办</h1>
-                {this.state.user.id?<button onClick={this.logOut}>登出</button>:null}
-                <TodoInput value={this.state.inputValue} changeValue={this.changeInputValue} addTodo={this.addTodo}/>
-                <ol className="todolist">{todos}</ol>
-                {this.state.user.id ? null : <UserDialog onSignUpOrLogIn={this.onSignUpOrLogIn} />}
+            <div className="App-wrap">
+                {this.state.user.id ? mainPart : null}
+                {this.state.user.id ? null : <UserDialog onSignUpOrLogIn={this.onSignUpOrLogIn}/>}
             </div>
         )
     }
