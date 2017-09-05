@@ -2,7 +2,7 @@
   "name": "react-todolist",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "https://swhzzz.github.io/React-Todo/build/index.html",
+  "homepage" : "https://swhzzz.github.io/React-Todo/build",
   "dependencies": {
     "leancloud-storage": "^3.1.1",
     "normalize.css": "^7.0.0",
