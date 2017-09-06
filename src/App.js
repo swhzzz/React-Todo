@@ -57,7 +57,6 @@ class App extends Component {
         TodoModel.destroy(todo.id)
         this.state.todoList.forEach((item, index) => {
             if (item.id === todo.id) {//id相同删除
-                console.log(index)
                 return this.state.todoList.splice(index, 1)
             }
         });
@@ -67,7 +66,6 @@ class App extends Component {
     }
 
     onSignUpOrLogIn = (user) => {//注册或者登陆成功后，更新state，显示待办页
-        console.log(user);
         this.setState({user})
     }
 

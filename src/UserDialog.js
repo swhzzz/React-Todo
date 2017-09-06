@@ -1,10 +1,12 @@
 import React from 'react'
-import {signUp,logIn,resetPassword} from './leanCloud'
+import {signUp, logIn, resetPassword} from './leanCloud'
 import SignUpForm from './SignUpForm'
 import LoginForm from './LoginForm'
 import getErrorMsg from './getErrorMsg'
 import ForgetPassword from './ForgetPassword'
 import './UserDialog.css'
+import BgBubbles from './BgBubbles'
+import './font/iconfont.css'
 
 export default class UserDialog extends React.Component {
     state = {
@@ -17,10 +19,12 @@ export default class UserDialog extends React.Component {
         }
     }
 
-    handleSwitch = e => {
-        this.setState({
-            selected: e.target.value
-        })
+    handleSwitch() {
+        if (this.state.selected === 'signUp') {
+            this.setState({selected: 'logIn'})
+        } else {
+            this.setState({selected: 'signUp'})
+        }
     }
 
     signUp(e) {
@@ -29,28 +33,28 @@ export default class UserDialog extends React.Component {
         if (email === '' || username === '' || password === '') {
             return;
         }
-        let success = (user)=> {
+        let success = (user) => {
             console.log(user);
             this.props.onSignUpOrLogIn(user)
         }
-        let error = (error)=>{
+        let error = (error) => {
             let errorMsg = getErrorMsg(error)
             console.log(errorMsg)
         }
-        signUp(email,username,password,success,error)
+        signUp(email, username, password, success, error)
     }
 
     logIn(e) {
         e.preventDefault();
         let {username, password} = this.state.formData;
-        let success = (user)=>{
+        let success = (user) => {
             this.props.onSignUpOrLogIn(user)
         }
-        let error = (error)=>{
+        let error = (error) => {
             let errorMsg = getErrorMsg(error)
             console.log(errorMsg)
         };
-        logIn(username,password,success,error)
+        logIn(username, password, success, error)
     }
 
     changeFormData(key, e) {
@@ -67,7 +71,6 @@ export default class UserDialog extends React.Component {
         e.preventDefault();
         let {email} = this.state.formData;
         if (/^\w+@\w+(\.com)$/i.test(email)) {
-            console.log('ok');
             resetPassword(email)
         }
     }
@@ -85,25 +88,22 @@ export default class UserDialog extends React.Component {
         let signUpOrLogIn = (
             <div className="signUpOrLogIn">
                 <div>
-                    <label><input type="radio" value="signUp" checked={this.state.selected === 'signUp'}
-                                  onChange={this.handleSwitch}/>注册</label>
-                    <label><input type="radio" value="logIn" checked={this.state.selected === 'logIn'}
-                                  onChange={this.handleSwitch}/>登录</label>
-                </div>
-                <div>
                     {this.state.selected === 'signUp' ?
                         <SignUpForm formData={this.state.formData} onSubmit={this.signUp.bind(this)}
-                                    onChange={this.changeFormData.bind(this)}/> : null}
+                                    onChange={this.changeFormData.bind(this)}
+                                    switch={this.handleSwitch.bind(this)}/> : null}
                     {this.state.selected === 'logIn' ?
                         <LoginForm formData={this.state.formData} onSubmit={this.logIn.bind(this)}
                                    onChange={this.changeFormData.bind(this)}
-                                   forgetPassword={this.forgetPassword.bind(this)}/> : null}
+                                   forgetPassword={this.forgetPassword.bind(this)}
+                                   switch={this.handleSwitch.bind(this)}/> : null}
                 </div>
             </div>
         )
         return (
             <div className="UserDialog-wrap">
                 {this.state.selectedTab === 'signUpOrLogIn' ? signUpOrLogIn : forgetPassword}
+                <BgBubbles/>
             </div>
         )
     }

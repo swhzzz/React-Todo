@@ -13,7 +13,6 @@ export const TodoModel = {
     getByUser(user, successFn, errorFn) {
         let query = new AV.Query('Todo')
         query.find().then((response) => {
-            console.log(response);
             let array = response.map((t) => {
                 return {id: t.id, ...t.attributes}
             })
@@ -28,7 +27,7 @@ export const TodoModel = {
         let todo = new Todo();
         // 设置名称
         todo.set('content', content);
-        // 设置优先[级
+        // 设置优先级
         todo.set('isDone', isDone);
 
         let acl = new AV.ACL()
@@ -53,11 +52,8 @@ export const TodoModel = {
         })
     },
     destroy(todoId, successFn, errorFn) {
-        console.log('this is destroy')
-        console.log(todoId);
         let todo = AV.Object.createWithoutData('Todo', todoId)
         todo.destroy().then((response) => {
-            console.log("destroy response:" + response);
             successFn && successFn.call(null)
         }, (error) => {
             errorFn && errorFn.call(null, error)
