@@ -1,9 +1,9 @@
 import React from 'react'
-import AV from './leanCloud'
+import {signUp,logIn,resetPassword} from './leanCloud'
 import SignUpForm from './SignUpForm'
 import LoginForm from './LoginForm'
-import ForgetPassword from './ForgetPassword'
 import getErrorMsg from './getErrorMsg'
+import ForgetPassword from './ForgetPassword'
 import './UserDialog.css'
 
 export default class UserDialog extends React.Component {
@@ -26,44 +26,36 @@ export default class UserDialog extends React.Component {
     signUp(e) {
         e.preventDefault();
         let {email, username, password} = this.state.formData;
-        if (username === '' || password === '') {
+        if (email === '' || username === '' || password === '') {
             return;
         }
-        let user = new AV.User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEmail(email);
-        user.signUp().then((loginedUser) => {
-            console.log(loginedUser);
-            this.props.onSignUpOrLogIn({
-                id: loginedUser.id,
-                ...loginedUser.attributes
-            })
-        }, (error) => {
+        let success = (user)=> {
+            console.log(user);
+            this.props.onSignUpOrLogIn(user)
+        }
+        let error = (error)=>{
             let errorMsg = getErrorMsg(error)
             console.log(errorMsg)
-        })
+        }
+        signUp(email,username,password,success,error)
     }
 
     logIn(e) {
         e.preventDefault();
         let {username, password} = this.state.formData;
-        AV.User.logIn(username, password).then((loginedUser) => {
-            this.props.onSignUpOrLogIn({
-                id: loginedUser.id,
-                ...loginedUser.attributes
-            })
-        }, (error) => {
-            let errorMsg = getErrorMsg(error);
+        let success = (user)=>{
+            this.props.onSignUpOrLogIn(user)
+        }
+        let error = (error)=>{
+            let errorMsg = getErrorMsg(error)
             console.log(errorMsg)
-        })
+        };
+        logIn(username,password,success,error)
     }
 
     changeFormData(key, e) {
-        // console.log(key,e)
         let stateCopy = JSON.parse(JSON.stringify(this.state));
         stateCopy.formData[key] = e.target.value;
-        // console.log(e.target.value)
         this.setState(stateCopy)
     }
 
@@ -76,11 +68,7 @@ export default class UserDialog extends React.Component {
         let {email} = this.state.formData;
         if (/^\w+@\w+(\.com)$/i.test(email)) {
             console.log('ok');
-            AV.User.requestPasswordReset(email).then((xx) => {
-                console.log(xx)
-            }, (error) => {
-                console.log(error)
-            })
+            resetPassword(email)
         }
     }
 

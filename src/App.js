@@ -4,31 +4,25 @@ import 'normalize.css'
 import './App.css'
 import TodoInput from './TodoInput'
 import TodoItem from './TodoItem'
-// import localStore from './localStore'
 import UserDialog from "./UserDialog";
-import AV from './leanCloud'
-
-let i = 0;
+import {getCurrentUser, logOut, TodoModel} from './leanCloud'
 
 class App extends Component {
-    state = {
-        inputValue: '',
-        // todoList: localStore.load('data') || []
-        todoList: [],
-        checked: 'signUp',
-        user: this.getCurrentUser() || {}
-    }
-
-    getCurrentUser() {
-        let user = AV.User.current()
-        // console.log(user)
+    constructor(props) {
+        super(props)
+        this.state = {
+            inputValue: '',
+            todoList: [],
+            checked: 'signUp',
+            user: getCurrentUser() || {}
+        }
+        let user = getCurrentUser()
         if (user) {
-            return {
-                id: user.id,
-                ...user.attributes
-            }
-        } else {
-            return null
+            TodoModel.getByUser(user, (todos) => {
+                let stateCopy = JSON.parse(JSON.stringify(this.state))
+                stateCopy.todoList = todos
+                this.setState(stateCopy)
+            })
         }
     }
 
@@ -37,25 +31,33 @@ class App extends Component {
     }
 
     addTodo = () => {
-        this.state.todoList.push({
-            id: i++,
+        let newTodo = {
             content: this.state.inputValue,
             isDone: false
-        })
-        this.setState({
-            inputValue: '',
-            todoList: this.state.todoList
+        }
+        TodoModel.create(newTodo, (id) => {
+            newTodo.id = id
+            this.state.todoList.push(newTodo)
+            this.setState({
+                inputValue: '',
+                todoList: this.state.todoList
+            })
+        }, (error) => {
+            console.log(error)
         })
     }
 
     handleToggle = (todo) => {
         todo.isDone = !todo.isDone;
+        TodoModel.update(todo);
         this.setState(this.state)
     }
 
-    handleDelete = (id) => {
+    deleteTodo = (todo) => {
+        TodoModel.destroy(todo.id)
         this.state.todoList.forEach((item, index) => {
-            if (item.id === id) {
+            if (item.id === todo.id) {//id相同删除
+                console.log(index)
                 return this.state.todoList.splice(index, 1)
             }
         });
@@ -64,30 +66,26 @@ class App extends Component {
         })
     }
 
-    onSignUpOrLogIn = (user) => {
+    onSignUpOrLogIn = (user) => {//注册或者登陆成功后，更新state，显示待办页
+        console.log(user);
         this.setState({user})
     }
 
-    // onLogIn = (user)=>{
-    //     this.setState({user})
-    // }
-
-    logOut = () => {
-        this.setState({user: {}});
-        AV.User.logOut()
+    logOut() {
+        logOut()
+        this.setState({
+            user: {}
+        })
     }
-    // componentDidUpdate(){
-    //     localStore.save('data',this.state.todoList)
-    // }
 
     render() {
         let todos = this.state.todoList.map((item, index) => {
             return <TodoItem key={index} todo={item} handleToggle={this.handleToggle}
-                             handleDelete={this.handleDelete}/>
+                             deleteTodo={this.deleteTodo}/>
         });
         let mainPart = <div className="App">
             <h1>{this.state.user.username || '我'}的待办</h1>
-            {this.state.user.id ? <button onClick={this.logOut}>登出</button> : null}
+            {this.state.user.id ? <button onClick={this.logOut.bind(this)}>登出</button> : null}
             <TodoInput value={this.state.inputValue} changeValue={this.changeInputValue} addTodo={this.addTodo}/>
             <ol className="todolist">{todos}</ol>
         </div>;

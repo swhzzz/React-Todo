@@ -1,21 +1,25 @@
 import React from 'react'
 import './TodoInput.css'
 
-class TodoInput extends React.Component{
-    handleChange= (e)=>{
+class TodoInput extends React.Component {
+    handleChange(e) {
         this.props.changeValue(e.target.value)
     }
 
-    handleKeyPress = (e)=>{
-        if(e.key === 'Enter'){
-            this.props.addTodo()
+    handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            if (e.target.value.trim() !== '') {
+                this.props.addTodo()
+            }
         }
     }
 
-    render(){
+    render() {
         return (
             <div>
-                <input type="text" className="todoInput" value={this.props.value} onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
+                <input type="text" className="todoInput" value={this.props.value}
+                       onChange={this.handleChange.bind(this)}
+                       onKeyPress={this.handleKeyPress.bind(this)}/>
             </div>
         )
     }
