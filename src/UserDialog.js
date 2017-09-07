@@ -106,6 +106,13 @@ export default class UserDialog extends React.Component {
     resetPassword(e) {
         e.preventDefault();
         let {email} = this.state.formData;
+        if(email === ''){
+            this.setState({msg: '邮箱不能为空'})
+            setTimeout(() => {
+                this.setState({msg: ''})
+            }, 2800)
+            return ;
+        }
         if (/^\w+@\w+(\.com)$/i.test(email)) {
             resetPassword(email)
         }
