@@ -1,19 +1,37 @@
+.App-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 .App {
+    position: relative;
     width: 30em;
-    min-height: 38em;
+    height: 38em;
+    overflow: scroll;
     padding: 0 1em;
     color: #333;
     border: 1px solid #aaa;
-    border-radius: 4px;
+    border-radius: 7px;
     background-color: #fff;
-    margin: 2em auto;
-    box-shadow: 0 0 5px rgba(0,0,0,0.4);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
-.App>.todolist> li:nth-child(odd){
+
+.App > .todolist > li:nth-child(odd) {
     background-color: #eee;
 }
 
-.App>.todolist> li:nth-child(even){
+.App > .todolist > li:nth-child(even) {
     background-color: transparent;
+}
+.logOutBtn {
+    position:absolute;
+    top: 1em;
+    right: 1em;
+    padding: 8px;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
 }
 

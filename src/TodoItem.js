@@ -3,12 +3,11 @@ import './TodoItem.css'
 
 export default function (props) {
     return (
-        <li className="todo">
-            <input type="checkbox" checked={props.todo.isDone}
-                   onChange={props.handleToggle.bind(this, props.todo)}/>
+        <li className={"todo todoFadeIn"}>
+            <i className={"iconfont "+(props.todo.isDone?"icon-check-box-outline":"icon-check-box-outline-bl")} onClick={props.handleToggle.bind(this, props.todo)}></i>
             <span
                 className={"content " + (props.todo.isDone ? "line-through" : '')}>{props.todo.content}</span>
-            <button className="delete" onClick={props.deleteTodo.bind(this, props.todo)}>x</button>
+            <i className="iconfont icon-garbage delete" onClick={props.deleteTodo.bind(this, props.todo)}></i>
         </li>
     )
 }

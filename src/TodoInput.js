@@ -19,7 +19,7 @@ class TodoInput extends React.Component {
             <div>
                 <input type="text" className="todoInput" value={this.props.value}
                        onChange={this.handleChange.bind(this)}
-                       onKeyPress={this.handleKeyPress.bind(this)}/>
+                       onKeyPress={this.handleKeyPress.bind(this)} spellCheck="false"/>
             </div>
         )
     }

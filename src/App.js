@@ -6,6 +6,8 @@ import TodoInput from './TodoInput'
 import TodoItem from './TodoItem'
 import UserDialog from "./UserDialog";
 import {getCurrentUser, logOut, TodoModel} from './leanCloud'
+import BgBubbles from './BgBubbles'
+import BackGround from './BackGround'
 
 class App extends Component {
     constructor(props) {
@@ -83,12 +85,14 @@ class App extends Component {
         });
         let mainPart = <div className="App">
             <h1>{this.state.user.username || '我'}的待办</h1>
-            {this.state.user.id ? <button onClick={this.logOut.bind(this)}>登出</button> : null}
+            {this.state.user.id ? <button className="logOutBtn" onClick={this.logOut.bind(this)}><i className="iconfont icon-logout"></i></button> : null}
             <TodoInput value={this.state.inputValue} changeValue={this.changeInputValue} addTodo={this.addTodo}/>
             <ol className="todolist">{todos}</ol>
         </div>;
         return (
             <div className="App-wrap">
+                <BackGround/>
+                <BgBubbles/>
                 {this.state.user.id ? mainPart : null}
                 {this.state.user.id ? null : <UserDialog onSignUpOrLogIn={this.onSignUpOrLogIn}/>}
             </div>

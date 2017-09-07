@@ -5,7 +5,6 @@ import LoginForm from './LoginForm'
 import getErrorMsg from './getErrorMsg'
 import ForgetPassword from './ForgetPassword'
 import './UserDialog.css'
-import BgBubbles from './BgBubbles'
 import './iconfont/iconfont.css'
 import Toast from "./Toast";
 
@@ -140,7 +139,7 @@ export default class UserDialog extends React.Component {
         return (
             <div className="UserDialog-wrap">
                 {this.state.selectedTab === 'signUpOrLogIn' ? signUpOrLogIn : forgetPassword}
-                <BgBubbles/>
+
                 {this.state.msg ? <Toast msg={this.state.msg}/> : null}
             </div>
         )
