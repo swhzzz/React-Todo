@@ -6,7 +6,8 @@ import getErrorMsg from './getErrorMsg'
 import ForgetPassword from './ForgetPassword'
 import './UserDialog.css'
 import BgBubbles from './BgBubbles'
-import './font/iconfont.css'
+import './iconfont/iconfont.css'
+import Toast from "./Toast";
 
 export default class UserDialog extends React.Component {
     state = {
@@ -16,7 +17,8 @@ export default class UserDialog extends React.Component {
             email: '',
             username: '',
             password: ''
-        }
+        },
+        msg: ''
     }
 
     handleSwitch() {
@@ -30,8 +32,24 @@ export default class UserDialog extends React.Component {
     signUp(e) {
         e.preventDefault();
         let {email, username, password} = this.state.formData;
-        if (email === '' || username === '' || password === '') {
+        if (email === '' ) {
+            this.setState({msg: '邮箱不能为空'})
+            setTimeout(() => {
+                this.setState({msg: ''})
+            }, 2800)
             return;
+        }else if(username === ''){
+            this.setState({msg: '用户名不能为空'})
+            setTimeout(() => {
+                this.setState({msg: ''})
+            }, 2800)
+            return;
+        }else if(password === '') {
+            this.setState({msg: '密码不能为空'})
+            setTimeout(() => {
+                this.setState({msg: ''})
+            }, 2800)
+            return ;
         }
         let success = (user) => {
             console.log(user);
@@ -39,20 +57,39 @@ export default class UserDialog extends React.Component {
         }
         let error = (error) => {
             let errorMsg = getErrorMsg(error)
-            console.log(errorMsg)
-        }
+            this.setState({msg: errorMsg})
+            setTimeout(() => {
+                this.setState({msg: ''})
+            }, 2800)
+        };
         signUp(email, username, password, success, error)
     }
 
     logIn(e) {
         e.preventDefault();
         let {username, password} = this.state.formData;
+        if(username === ''){
+            this.setState({msg: '用户名不能为空'})
+            setTimeout(() => {
+                this.setState({msg: ''})
+            }, 2800)
+            return;
+        }else if(password === '') {
+            this.setState({msg: '密码不能为空'})
+            setTimeout(() => {
+                this.setState({msg: ''})
+            }, 2800)
+            return ;
+        }
         let success = (user) => {
             this.props.onSignUpOrLogIn(user)
         }
         let error = (error) => {
             let errorMsg = getErrorMsg(error)
-            console.log(errorMsg)
+            this.setState({msg: errorMsg})
+            setTimeout(() => {
+                this.setState({msg: ''})
+            }, 2800)
         };
         logIn(username, password, success, error)
     }
@@ -104,6 +141,7 @@ export default class UserDialog extends React.Component {
             <div className="UserDialog-wrap">
                 {this.state.selectedTab === 'signUpOrLogIn' ? signUpOrLogIn : forgetPassword}
                 <BgBubbles/>
+                {this.state.msg ? <Toast msg={this.state.msg}/> : null}
             </div>
         )
     }

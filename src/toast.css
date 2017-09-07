@@ -1,0 +1,27 @@
+.toast {
+    display: block;
+    position: fixed;
+    padding: 8px 16px;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    color: #000;
+    background-color: #fff;
+    box-shadow: 0 0 8px #fff;
+}
+
+.animation {
+    animation: fade 3s;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

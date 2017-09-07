@@ -9,7 +9,7 @@ export default function (props) {
                 <div className="row">
                     <label><i className="iconfont icon-username"></i></label>
                     <input type="text" value={props.formData.username}
-                           onChange={props.onChange.bind(null, 'username')}/>
+                           onChange={props.onChange.bind(null, 'username')} spellCheck="false"/>
                 </div>
                 <div className="row">
                     <label><i className="iconfont icon-password"></i></label>

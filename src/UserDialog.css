@@ -44,6 +44,11 @@
     outline: none;
     border: none;
     border-bottom: 1px solid #ccc;
+    transition: all .4s;
+}
+
+.row > input:focus {
+    border-bottom-color: #2193b0;
 }
 
 button {

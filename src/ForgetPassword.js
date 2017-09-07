@@ -8,7 +8,7 @@ export default class ForgetPassword extends React.Component{
                     <div className="row">
                         <label><i className="iconfont icon-email"></i></label>
                         <input type="email" value={this.props.formData.email}
-                               onChange={this.props.onChange.bind(null, 'email')}/>
+                               onChange={this.props.onChange.bind(null, 'email')} spellCheck="false"/>
                     </div>
                     <button onClick={this.props.resetPassword}>发送邮件</button>
                     <a href="#" className="goBackLogInBtn" onClick={this.props.goBackToLogIn}>返回登录</a>
